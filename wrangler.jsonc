@@ -32,6 +32,15 @@
 			"service": "goxstream-nextjs"
 		}
 	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "goxstream-nextjs",
+			"database_id": "2449ddfe-708e-479b-b35c-dfe24896e5f5",
+			"preview_database_id": "DB",
+			"migrations_dir": "drizzle/migrations"
+		}
+	],
 	"observability": {
 		"enabled": true
 	},

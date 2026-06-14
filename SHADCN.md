@@ -37,3 +37,14 @@ export default function RootLayout({
   );
 }
 ```
+
+```
+
+	"devEngines": {
+		"packageManager": {
+			"name": "pnpm",
+			"version": "11.5.3",
+			"onFail": "download"
+		}
+	},
+```

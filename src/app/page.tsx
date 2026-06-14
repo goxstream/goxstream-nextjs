@@ -1,50 +1,81 @@
 "use client";
 
 import * as React from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Switch as AnimatedSwitch } from "@/components/animate-ui/components/radix/switch";
+import Header from "@/components/layout/Header";
+import Sidebar from "@/components/layout/Sidebar";
+import Footer from "@/components/layout/Footer";
+import Hero from "@/features/home/components/Hero";
+import AnimeRail from "@/features/home/components/AnimeRail";
+import GenreShowcase from "@/features/home/components/GenreShowcase";
+import SmallCard from "@/features/home/components/cards/SmallCard";
+import MediumCard from "@/features/home/components/cards/MediumCard";
+import { 
+  getTrendingAnime, 
+  getNewReleases, 
+  getTopRated, 
+  getContinueWatching, 
+  getRecommended, 
+  getSeasonalAnime 
+} from "@/data/dummy-anime";
 
 export default function Home() {
-  const [active, setActive] = React.useState(false);
+  const trending = getTrendingAnime();
+  const newReleases = getNewReleases();
+  const topRated = getTopRated();
+  const continueWatching = getContinueWatching();
+  const recommended = getRecommended();
+  const seasonal = getSeasonalAnime(2024, "Winter");
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-8 bg-background">
-      <div className="max-w-4xl w-full grid gap-8 md:grid-cols-2">
-        {/* Standard Shadcn UI Component */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Standard Dashboard Component</CardTitle>
-            <CardDescription>
-              This is a standard Shadcn UI Card. It doesn't use heavy animations, ideal for static data density.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            <div className="h-24 rounded bg-muted flex items-center justify-center">
-              <span className="text-muted-foreground text-sm">Dashboard Content</span>
-            </div>
-            <Button variant="default">Standard Button</Button>
-          </CardContent>
-        </Card>
+    <div className="min-h-screen bg-background">
+      <Header />
+      <div className="flex">
+        <Sidebar />
+        <main className="flex-1 md:pl-[72px] w-full max-w-full overflow-hidden">
+          <div className="w-full max-w-[1920px] mx-auto pb-12">
+            <Hero />
+            
+            <AnimeRail title="Continue Watching" small>
+              {continueWatching.map((anime) => (
+                <SmallCard key={anime.id} anime={anime} episode={Math.floor(Math.random() * 12) + 1} />
+              ))}
+            </AnimeRail>
 
-        {/* Animate UI Component */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Animate UI Component</CardTitle>
-            <CardDescription>
-              This component is from Animate UI. It utilizes Framer Motion to provide a fluid, premium interaction.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center min-h-[200px] gap-6">
-            <div className="flex items-center space-x-4">
-              <span className="text-sm font-medium">Toggle Premium Feature</span>
-              <AnimatedSwitch checked={active} onCheckedChange={setActive} />
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Feature is {active ? "Enabled" : "Disabled"}
-            </p>
-          </CardContent>
-        </Card>
+            <AnimeRail title="Trending This Week">
+              {trending.map((anime) => (
+                <MediumCard key={anime.id} anime={anime} />
+              ))}
+            </AnimeRail>
+
+            <AnimeRail title="New Releases">
+              {newReleases.map((anime) => (
+                <MediumCard key={anime.id} anime={anime} />
+              ))}
+            </AnimeRail>
+
+            <GenreShowcase />
+
+            <AnimeRail title="Winter 2024 Anime">
+              {seasonal.map((anime) => (
+                <MediumCard key={anime.id} anime={anime} />
+              ))}
+            </AnimeRail>
+
+            <AnimeRail title="Top Rated">
+              {topRated.map((anime) => (
+                <MediumCard key={anime.id} anime={anime} />
+              ))}
+            </AnimeRail>
+
+            <AnimeRail title="Recommended For You" small>
+              {recommended.map((anime) => (
+                <SmallCard key={anime.id} anime={anime} />
+              ))}
+            </AnimeRail>
+            
+            <Footer />
+          </div>
+        </main>
       </div>
     </div>
   );
