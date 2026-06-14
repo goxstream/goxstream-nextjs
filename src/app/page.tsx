@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
@@ -9,22 +7,48 @@ import AnimeRail from "@/features/home/components/AnimeRail";
 import GenreShowcase from "@/features/home/components/GenreShowcase";
 import SmallCard from "@/features/home/components/cards/SmallCard";
 import MediumCard from "@/features/home/components/cards/MediumCard";
-import { 
-  getTrendingAnime, 
-  getNewReleases, 
-  getTopRated, 
-  getContinueWatching, 
-  getRecommended, 
-  getSeasonalAnime 
-} from "@/data/dummy-anime";
+import { getDb } from "@/db";
+import { anime as animeTable } from "@/db/schema";
+import type { Anime } from "@/data/dummy-anime";
 
-export default function Home() {
-  const trending = getTrendingAnime();
-  const newReleases = getNewReleases();
-  const topRated = getTopRated();
-  const continueWatching = getContinueWatching();
-  const recommended = getRecommended();
-  const seasonal = getSeasonalAnime(2024, "Winter");
+async function getAnimeData(): Promise<Anime[]> {
+  try {
+    const db = getDb();
+    const list = await db.select().from(animeTable).all();
+    
+    return list.map((a) => ({
+      id: a.id,
+      title: a.title,
+      slug: a.slug,
+      coverImage: a.coverImage,
+      bannerImage: a.bannerImage,
+      synopsis: a.synopsis || "",
+      genres: a.genres,
+      year: a.year || new Date().getFullYear(),
+      quarter: a.quarter || "Winter",
+      episodeCount: a.episodeCount || 0,
+      status: a.status || "Ongoing",
+      rating: a.rating || 0,
+      popularity: a.popularity || 0,
+    }));
+  } catch (error) {
+    console.warn("Failed to fetch anime from DB, falling back to dummy data:", error);
+    const { dummyAnime } = await import("@/data/dummy-anime");
+    return dummyAnime;
+  }
+}
+
+export default async function Home() {
+  const allAnime = await getAnimeData();
+
+  const trending = [...allAnime].sort((a, b) => (b.popularity || 0) - (a.popularity || 0)).slice(0, 5);
+  const newReleases = allAnime.filter(a => a.year === 2024).slice(0, 5);
+  const topRated = [...allAnime].sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 5);
+  const continueWatching = allAnime.slice(0, 5);
+  const recommended = allAnime.slice(5, 10);
+  const seasonal = allAnime.filter(a => a.year === 2024 && a.quarter === "Winter").slice(0, 5);
+
+  const featured = trending[0] || allAnime[0];
 
   return (
     <div className="min-h-screen bg-background">
@@ -33,7 +57,7 @@ export default function Home() {
         <Sidebar />
         <main className="flex-1 md:pl-[72px] w-full max-w-full overflow-hidden">
           <div className="w-full max-w-[1920px] mx-auto pb-12">
-            <Hero />
+            {featured && <Hero anime={featured} />}
             
             <AnimeRail title="Continue Watching" small>
               {continueWatching.map((anime) => (
@@ -80,3 +104,4 @@ export default function Home() {
     </div>
   );
 }
+
