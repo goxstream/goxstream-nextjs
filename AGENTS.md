@@ -29,7 +29,7 @@ This repository contains local agent skills structured inside the `.agents/skill
 
 ### 1. Consistency First
 - Prioritize consistency over theoretical ideals. Before writing code, inspect sibling components, actions, or route handlers to replicate established patterns, imports, structures, and styling.
-- Follow the directory structure defined in [.agents/PROJECT_STRUCTURE_RULE.md](file:///c:/Users/dyzulk/Documents/goxstream/goxstream-nextjs/.agents/PROJECT_STRUCTURE_RULE.md) and the architectural guidelines in [.agents/PROJECT_ARCHITECTURE.md](file:///c:/Users/dyzulk/Documents/goxstream/goxstream-nextjs/.agents/PROJECT_ARCHITECTURE.md) exactly.
+- Follow the directory structure defined in [.agents/PROJECT_STRUCTURE_RULE.md](.agents/PROJECT_STRUCTURE_RULE.md) and the architectural guidelines in [.agents/PROJECT_ARCHITECTURE.md](.agents/PROJECT_ARCHITECTURE.md) exactly.
 
 ### 2. Directory & Naming Guidelines
 - Use `kebab-case` for directory names (e.g., `src/features/watch-history/`).

@@ -4,10 +4,10 @@ This document defines the database schema conventions, table catalog, relationsh
 
 **Engine**: Cloudflare D1 (SQLite)
 **ORM**: Drizzle ORM 0.45.2
-**Schema Source**: [`src/db/schema.ts`](file:///c:/Users/dyzulk/Documents/goxstream/goxstream-nextjs/src/db/schema.ts)
-**Migration Output**: `drizzle/migrations/`
-**Drizzle Config**: [`drizzle.config.ts`](file:///c:/Users/dyzulk/Documents/goxstream/goxstream-nextjs/drizzle.config.ts)
-**Client Module**: [`src/db/index.ts`](file:///c:/Users/dyzulk/Documents/goxstream/goxstream-nextjs/src/db/index.ts)
+**Schema Source**: [`src/infrastructure/database/schema/`](../src/infrastructure/database/schema/) (Modular: `auth.ts`, `users.ts`, `anime.ts`, `media.ts`, `interactions.ts`, `system.ts`)
+**Migration Output**: `src/infrastructure/database/migrations/`
+**Drizzle Config**: [`drizzle.config.ts`](../drizzle.config.ts)
+**Client Module**: [`src/infrastructure/database/client.ts`](../src/infrastructure/database/client.ts)
 
 ---
 
@@ -231,7 +231,7 @@ import { db } from "@/db";
 const result = await db.query.anime.findMany();
 ```
 
-### Implementation ([`src/db/index.ts`](file:///c:/Users/dyzulk/Documents/goxstream/goxstream-nextjs/src/db/index.ts))
+### Implementation ([`src/infrastructure/database/client.ts`](../src/infrastructure/database/client.ts))
 
 ```typescript
 import { getCloudflareContext } from "@opennextjs/cloudflare";
@@ -243,7 +243,7 @@ export function getDb() {
   return drizzle(env.DB, { schema });
 }
 
-// Lazy proxy -- avoids top-level getCloudflareContext() call
+// Inisialisasi lazy proxy -- menghindari pemanggilan getCloudflareContext() di tingkat teratas
 export const db = new Proxy({} as ReturnType<typeof getDb>, {
   get(target, prop, receiver) {
     const actualDb = getDb();
@@ -264,22 +264,22 @@ export const db = new Proxy({} as ReturnType<typeof getDb>, {
 ## Migration Workflow
 
 ### 1. Edit Schema
-Modify table definitions in [`src/db/schema.ts`](file:///c:/Users/dyzulk/Documents/goxstream/goxstream-nextjs/src/db/schema.ts).
+Modify table definitions inside the appropriate modular schema file under [`src/infrastructure/database/schema/`](../src/infrastructure/database/schema/).
 
 ### 2. Generate Migration
 ```bash
 npx drizzle-kit generate
 ```
-This produces a new SQL file in `drizzle/migrations/` (e.g., `0002_awesome_name.sql`).
+This produces a new SQL file in `src/infrastructure/database/migrations/` (e.g., `0002_awesome_name.sql`).
 
 ### 3. Apply Migration Locally
 ```bash
-npx wrangler d1 execute DB --local --file=drizzle/migrations/0002_awesome_name.sql
+npx wrangler d1 execute DB --local --file=src/infrastructure/database/migrations/0002_awesome_name.sql
 ```
 
 ### 4. Apply Migration to Production
 ```bash
-npx wrangler d1 execute DB --remote --file=drizzle/migrations/0002_awesome_name.sql
+npx wrangler d1 execute DB --remote --file=src/infrastructure/database/migrations/0002_awesome_name.sql
 ```
 
 ### 5. Regenerate Cloudflare Types
@@ -300,12 +300,14 @@ These rules must never be violated when working with the database:
 
 2. **No auto-increment integer primary keys.** All primary keys must be `text("id")` with string-based values.
 
-3. **No top-level `getCloudflareContext()` calls.** Always use the lazy proxy `db` export from `src/db/index.ts`. Direct top-level invocation causes build-time crashes.
+3. **No top-level `getCloudflareContext()` calls.** Always use the lazy proxy `db` export from `src/infrastructure/database/client.ts`. Direct top-level invocation causes build-time crashes.
 
 4. **No `onDelete: "set null"` foreign keys.** Use only `cascade` (child removed with parent) or `restrict` (prevent parent deletion while children exist).
 
 5. **No inline relation definitions.** Relations must be declared in separate `*Relations` exports, never inside the `sqliteTable()` call.
 
-6. **No direct D1 binding access in domain modules.** Database access must go through the Drizzle client. Cloudflare bindings are isolated to `src/db/index.ts` and `src/cloudflare/`.
+6. **No direct D1 binding access in domain modules.** Database access must go through the Drizzle client. Cloudflare bindings are isolated to `src/infrastructure/database/client.ts` and `src/cloudflare/`.
 
-7. **No schema changes without migration generation.** Every modification to `src/db/schema.ts` must be followed by `npx drizzle-kit generate` to create a corresponding migration file.
+7. **No schema changes without migration generation.** Every modification to files in `src/infrastructure/database/schema/` must be followed by `npx drizzle-kit generate` to create a corresponding migration file.
+
+8. **No monolithic schemas.** Do not add tables or relations to a single large monolithic file. Split them into domain-specific partial files (auth, users, anime, media, interactions, system) under `src/infrastructure/database/schema/` and re-export them via `index.ts`.
