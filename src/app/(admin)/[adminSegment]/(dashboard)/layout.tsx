@@ -1,9 +1,9 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { authAdmin } from "@/lib/auth/admin";
+import { authAdmin } from "@/modules/auth/services/authAdmin";
 import { AdminSidebar } from "@/features/admin/layout/AdminSidebar";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
-import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { ThemeToggle } from "@/components/layouts/ThemeToggle";
 
 interface AdminDashboardLayoutProps {
   children: React.ReactNode;

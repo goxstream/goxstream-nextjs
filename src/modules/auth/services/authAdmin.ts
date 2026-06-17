@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "@/db";
-import * as schema from "@/db/schema";
+import { db } from "@/infrastructure/database/client";
+import * as schema from "@/infrastructure/database/schema";
 
 export const authAdmin = betterAuth({
   basePath: "/api/auth/admin",

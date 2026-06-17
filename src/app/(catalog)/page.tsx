@@ -1,5 +1,5 @@
 import * as React from "react";
-import Footer from "@/components/layout/Footer";
+import Footer from "@/components/layouts/Footer";
 import Hero from "@/features/home/components/Hero";
 import AnimeRail from "@/features/home/components/AnimeRail";
 import GenreShowcase from "@/features/home/components/GenreShowcase";

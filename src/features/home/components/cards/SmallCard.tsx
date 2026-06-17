@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Play } from "lucide-react";
-import type { Anime } from "@/data/dummy-anime";
+import type { Anime } from "@/modules/anime/types";
 
 export default function SmallCard({ anime, episode = 1 }: { anime: Anime; episode?: number }) {
   return (

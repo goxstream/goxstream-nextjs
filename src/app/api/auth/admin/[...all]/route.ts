@@ -1,4 +1,3 @@
-import { authAdmin } from "@/lib/auth/admin";
-import { toNextJsHandler } from "better-auth/next-js";
+import { adminAuthHandler } from "@/server/api/auth/admin";
 
-export const { GET, POST } = toNextJsHandler(authAdmin);
+export const { GET, POST } = adminAuthHandler;

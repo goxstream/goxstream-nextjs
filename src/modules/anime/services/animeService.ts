@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { AnimeRepository } from "../repositories/animeRepository";
-import type { Anime } from "@/data/dummy-anime";
+import type { Anime } from "../types";
 
 export class AnimeService {
   private repository = new AnimeRepository();
@@ -16,20 +16,19 @@ export class AnimeService {
         coverImage: a.coverImage,
         bannerImage: a.bannerImage,
         synopsis: a.synopsis || "",
-        genres: a.genres,
+        genres: a.genres || [],
         year: a.year || new Date().getFullYear(),
-        quarter: a.quarter || "Winter",
+        quarter: (a.quarter as any) || "Winter",
         episodeCount: a.episodeCount || 0,
-        status: a.status || "Ongoing",
+        status: (a.status as any) || "Ongoing",
         rating: Number(a.rating) || 0,
         popularity: a.popularity || 0,
       }));
 
       return this.partitionCategories(mapped);
     } catch (error) {
-      console.warn("Failed to fetch anime from DB, falling back to dummy data:", error);
-      const { dummyAnime } = await import("@/data/dummy-anime");
-      return this.partitionCategories(dummyAnime);
+      console.error("Failed to fetch anime from DB:", error);
+      return this.partitionCategories([]);
     }
   }
 
@@ -46,17 +45,11 @@ export class AnimeService {
         episodeRecords = await this.repository.findEpisodesByAnimeId(animeRecord.id);
       }
     } catch (error) {
-      console.warn("Failed to fetch anime details from database, searching dummy data:", error);
+      console.error("Failed to fetch anime details from database:", error);
     }
 
-    // Fallback to dummy data if not found in DB
     if (!animeRecord) {
-      const { dummyAnime } = await import("@/data/dummy-anime");
-      const found = dummyAnime.find((a) => a.slug === slug);
-      if (!found) {
-        notFound();
-      }
-      animeRecord = found;
+      notFound();
     }
 
     const mappedAnime: Anime = {
@@ -68,9 +61,9 @@ export class AnimeService {
       synopsis: animeRecord.synopsis || "",
       genres: animeRecord.genres || [],
       year: animeRecord.year || new Date().getFullYear(),
-      quarter: animeRecord.quarter || "Winter",
+      quarter: (animeRecord.quarter as any) || "Winter",
       episodeCount: animeRecord.episodeCount || 0,
-      status: animeRecord.status || "Ongoing",
+      status: (animeRecord.status as any) || "Ongoing",
       rating: Number(animeRecord.rating) || 0,
       popularity: animeRecord.popularity || 0,
     };

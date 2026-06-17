@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Play, Plus } from "lucide-react";
-import type { Anime } from "@/data/dummy-anime";
+import type { Anime } from "@/modules/anime/types";
 
 export default function MediumCard({ anime }: { anime: Anime }) {
   return (

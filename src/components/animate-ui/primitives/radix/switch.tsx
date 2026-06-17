@@ -10,7 +10,7 @@ import {
   type LegacyAnimationControls,
 } from 'motion/react';
 
-import { getStrictContext } from '@/lib/get-strict-context';
+import { getStrictContext } from '@/shared/utils/getStrictContext';
 import { useControlledState } from '@/hooks/use-controlled-state';
 
 type SwitchContextType = {

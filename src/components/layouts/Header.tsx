@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Search, User, Menu, Bell } from 'lucide-react';
 import { LogoType } from '@/components/Logo';
-import { ThemeToggle } from '@/components/layout/ThemeToggle';
+import { ThemeToggle } from '@/components/layouts/ThemeToggle';
 
 export default function Header() {
   return (
@@ -38,4 +38,3 @@ export default function Header() {
     </header>
   );
 }
-

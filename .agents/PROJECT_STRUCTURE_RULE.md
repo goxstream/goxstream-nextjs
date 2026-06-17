@@ -62,12 +62,12 @@ anime-streaming/
 │   │   │   └── anime/              (Shared catalog routes - guest and user accessible)
 │   │   │       └── [slug]/
 │   │   │           ├── page.tsx        (Anime details resolved at /anime/:slug)
-│   │   │           └── watch/
-│   │   │               └── page.tsx    (Video player resolved at /anime/:slug/watch)
+│   │   │           └── [episodeNumber]/
+│   │   │               └── page.tsx    (Video player resolved at /anime/:slug/:episodeNumber)
 │   │   │
 │   │   ├── (admin)/
 │   │   │   └── [adminSegment]/
-│   │   │       ├── layout.tsx          (Admin layout checking adminSegment against ADMIN_SLUG env)
+│   │   │       ├── layout.tsx          (Admin layout checking adminSegment against GOX_ADMIN_SLUG env)
 │   │   │       ├── (dashboard)/
 │   │   │       │   ├── layout.tsx      (Dashboard shell with sidebar + header)
 │   │   │       │   ├── page.tsx        (Dashboard overview, resolved at /[adminSegment])
@@ -302,6 +302,7 @@ anime-streaming/
 ## Routing & Layout Strategy
 
 ### 1. Route Groups
+
 - **`(marketing)`**: Contains non-authenticated public marketing pages (pricing page, about pages). These routes share a marketing-specific landing layout (`(marketing)/layout.tsx`) and resolve directly to `/pricing` and `/about`.
 - **`(app)`**: Contains core authenticated platform pages (profile, history). These routes are grouped under the main application layout (`(app)/layout.tsx`) containing sidebars, watch details, and user session configurations. They resolve to `/profile` and `/history`.
 - **`(catalog)`**: Contains the main interactive anime catalog homepage (`page.tsx` resolved at `/`) and all penelusuran paths (`browse/`, `genres/`, `anime/`). These routes are grouped under a catalog layout (`(catalog)/layout.tsx`) containing shared headers, sidebars, and search discovery structures.
@@ -309,7 +310,9 @@ anime-streaming/
 - **`(admin)`**: Contains the administrative control panel pages. These routes are nested under a dynamic path parameter `[adminSegment]` (`src/app/(admin)/[adminSegment]/`). The layout (`layout.tsx`) validates the parameter against the server-side `GOX_ADMIN_SLUG` environment variable. If matched, it passes the slug down to the navigation components as a prop. This prevents exposing the secret admin path in public JavaScript client bundles.
 
 ### 2. Catalog Routing Strategy
+
 - Placing the catalog routes under `(catalog)` allows anonymous guests and signed-in users to share the same templates and components without duplicating the layout, making UI updates fully centralized.
 
 ### 3. Shared Layout Configurations (`src/lib/layout.shared.ts`)
+
 - Configures shared variables and parameters (such as link structures for headers and sidebars) in a unified format, complying with DRY principles across route group layouts.

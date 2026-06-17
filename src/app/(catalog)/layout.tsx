@@ -1,7 +1,7 @@
 import * as React from "react";
-import Header from "@/components/layout/Header";
-import Sidebar from "@/components/layout/Sidebar";
-import BottomNav from "@/components/layout/BottomNav";
+import Header from "@/components/layouts/Header";
+import Sidebar from "@/components/layouts/Sidebar";
+import BottomNav from "@/components/layouts/BottomNav";
 
 export default function CatalogLayout({
   children,

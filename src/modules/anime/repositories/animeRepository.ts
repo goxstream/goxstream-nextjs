@@ -1,15 +1,13 @@
-import { getDb } from "@/db";
-import { anime as animeTable, episodes as episodesTable } from "@/db/schema";
+import { db } from "@/infrastructure/database/client";
+import { anime as animeTable, episodes as episodesTable } from "@/infrastructure/database/schema";
 import { eq } from "drizzle-orm";
 
 export class AnimeRepository {
   async findAll() {
-    const db = getDb();
     return db.select().from(animeTable).all();
   }
 
   async findBySlug(slug: string) {
-    const db = getDb();
     const results = await db
       .select()
       .from(animeTable)
@@ -19,7 +17,6 @@ export class AnimeRepository {
   }
 
   async findEpisodesByAnimeId(animeId: string) {
-    const db = getDb();
     return db
       .select()
       .from(episodesTable)

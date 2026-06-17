@@ -2,7 +2,7 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Play, Plus, Star, Calendar, Tv, Users, ArrowLeft } from "lucide-react";
-import Footer from "@/components/layout/Footer";
+import Footer from "@/components/layouts/Footer";
 import { AnimeService } from "@/modules/anime/services/animeService";
 
 interface PageProps {

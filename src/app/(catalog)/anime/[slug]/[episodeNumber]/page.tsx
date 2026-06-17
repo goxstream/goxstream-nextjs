@@ -2,7 +2,7 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Play, ArrowLeft, Star, Calendar, ListVideo } from "lucide-react";
-import Footer from "@/components/layout/Footer";
+import Footer from "@/components/layouts/Footer";
 import { AnimeService } from "@/modules/anime/services/animeService";
 import VideoPlayer from "@/features/watch/components/VideoPlayer";
 

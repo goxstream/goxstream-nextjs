@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import FeaturedCard from "./cards/FeaturedCard";
-import type { Anime } from "@/data/dummy-anime";
+import type { Anime } from "@/modules/anime/types";
 import {
   Carousel,
   CarouselContent,

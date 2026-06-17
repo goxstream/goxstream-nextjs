@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { authClientAdmin } from "@/lib/auth/client";
+import { authClientAdmin } from "@/modules/auth/client";
 import { toast } from "sonner";
 import {
   SidebarMenu,

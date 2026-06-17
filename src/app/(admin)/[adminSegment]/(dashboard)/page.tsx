@@ -1,10 +1,9 @@
-import { getDb } from "@/db";
-import { users, anime, episodes, comments } from "@/db/schema";
+import { db } from "@/infrastructure/database/client";
+import { users, anime, episodes, comments } from "@/infrastructure/database/schema";
 import { count } from "drizzle-orm";
 import { DashboardOverview } from "@/features/admin/components/DashboardOverview";
 
 export default async function AdminDashboardPage() {
-  const db = getDb();
 
   // Fetch counts from Drizzle ORM over Cloudflare D1
   const [usersCountRes, animeCountRes, episodesCountRes, commentsCountRes] = await Promise.all([
