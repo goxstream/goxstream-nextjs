@@ -1,4 +1,6 @@
 import { Film, Users, Tv, MessageSquare } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface DashboardOverviewProps {
   usersCount: number;
@@ -43,61 +45,74 @@ export function DashboardOverview({
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-white">Console Overview</h1>
-        <p className="text-neutral-400 mt-1">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Console Overview</h1>
+        <p className="text-muted-foreground mt-1">
           Backstage system metrics and catalog health
         </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat, idx) => (
-          <div
-            key={idx}
-            className="rounded-xl border border-neutral-800 bg-neutral-900/40 p-6 shadow-sm flex flex-col justify-between"
-          >
-            <div className="flex items-center justify-between space-y-0 pb-2">
-              <span className="text-sm font-medium text-neutral-400">
+          <Card key={idx} className="flex flex-col justify-between">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <span className="text-sm font-medium text-muted-foreground">
                 {stat.title}
               </span>
-              <stat.icon className="h-4 w-4 text-red-500" />
-            </div>
-            <div className="mt-2">
-              <div className="text-3xl font-bold text-white">{stat.value}</div>
-              <p className="text-xs text-neutral-500 mt-1">{stat.description}</p>
-            </div>
-          </div>
+              <stat.icon className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-foreground">{stat.value}</div>
+              <CardDescription className="text-xs text-muted-foreground mt-1">{stat.description}</CardDescription>
+            </CardContent>
+          </Card>
         ))}
       </div>
 
       {/* Quick Action Controls */}
-      <div className="rounded-xl border border-neutral-800 bg-neutral-900/20 p-6">
-        <h2 className="text-lg font-semibold text-white mb-4">Quick Operations</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="p-4 rounded-lg bg-neutral-950 border border-neutral-800 hover:border-neutral-700 transition duration-150">
-            <h3 className="font-medium text-neutral-200">Catalog Sync</h3>
-            <p className="text-xs text-neutral-500 mt-1 mb-3">Sync metadata profiles from external sources.</p>
-            <button className="text-xs bg-neutral-850 hover:bg-neutral-800 text-neutral-200 px-3 py-1.5 rounded transition cursor-pointer">
-              Trigger Sync
-            </button>
-          </div>
+      <Card className="p-6">
+        <CardHeader className="px-0 pt-0 pb-4">
+          <CardTitle className="text-lg font-semibold text-foreground">Quick Operations</CardTitle>
+        </CardHeader>
+        <CardContent className="px-0 pb-0">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <Card className="p-4 bg-muted/40 border-border hover:border-accent transition duration-150 flex flex-col justify-between gap-3">
+              <div>
+                <h3 className="font-semibold text-foreground text-sm">Catalog Sync</h3>
+                <p className="text-xs text-muted-foreground mt-1">Sync metadata profiles from external sources.</p>
+              </div>
+              <div>
+                <Button size="sm" variant="secondary" className="text-xs px-3 py-1.5 cursor-pointer">
+                  Trigger Sync
+                </Button>
+              </div>
+            </Card>
 
-          <div className="p-4 rounded-lg bg-neutral-950 border border-neutral-800 hover:border-neutral-700 transition duration-150">
-            <h3 className="font-medium text-neutral-200">Media Ingest</h3>
-            <p className="text-xs text-neutral-500 mt-1 mb-3">Upload and transcode new anime video files.</p>
-            <button className="text-xs bg-neutral-850 hover:bg-neutral-800 text-neutral-200 px-3 py-1.5 rounded transition cursor-pointer">
-              Open Transcoder
-            </button>
-          </div>
+            <Card className="p-4 bg-muted/40 border-border hover:border-accent transition duration-150 flex flex-col justify-between gap-3">
+              <div>
+                <h3 className="font-semibold text-foreground text-sm">Media Ingest</h3>
+                <p className="text-xs text-muted-foreground mt-1">Upload and transcode new anime video files.</p>
+              </div>
+              <div>
+                <Button size="sm" variant="secondary" className="text-xs px-3 py-1.5 cursor-pointer">
+                  Open Transcoder
+                </Button>
+              </div>
+            </Card>
 
-          <div className="p-4 rounded-lg bg-neutral-950 border border-neutral-800 hover:border-neutral-700 transition duration-150">
-            <h3 className="font-medium text-neutral-200">System Logs</h3>
-            <p className="text-xs text-neutral-500 mt-1 mb-3">Inspect Cloudflare Worker debug logs.</p>
-            <button className="text-xs bg-neutral-850 hover:bg-neutral-800 text-neutral-200 px-3 py-1.5 rounded transition cursor-pointer">
-              View Worker Logs
-            </button>
+            <Card className="p-4 bg-muted/40 border-border hover:border-accent transition duration-150 flex flex-col justify-between gap-3">
+              <div>
+                <h3 className="font-semibold text-foreground text-sm">System Logs</h3>
+                <p className="text-xs text-muted-foreground mt-1">Inspect Cloudflare Worker debug logs.</p>
+              </div>
+              <div>
+                <Button size="sm" variant="secondary" className="text-xs px-3 py-1.5 cursor-pointer">
+                  View Worker Logs
+                </Button>
+              </div>
+            </Card>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-INSERT INTO anime (id, title, slug, cover_image, banner_image, synopsis, genres, year, quarter, episode_count, status, rating, popularity)
+INSERT OR IGNORE INTO anime (id, title, slug, cover_image, banner_image, synopsis, genres, year, quarter, episode_count, status, rating, popularity)
 VALUES 
 (
   '1', 

@@ -68,11 +68,30 @@ anime-streaming/
 │   │   ├── (admin)/
 │   │   │   └── [adminSegment]/
 │   │   │       ├── layout.tsx          (Admin layout checking adminSegment against ADMIN_SLUG env)
-│   │   │       ├── page.tsx            (Dashboard home, resolved at /[adminSegment])
-│   │   │       ├── anime/
-│   │   │       ├── episodes/
-│   │   │       ├── users/
-│   │   │       └── reports/
+│   │   │       ├── (dashboard)/
+│   │   │       │   ├── layout.tsx      (Dashboard shell with sidebar + header)
+│   │   │       │   ├── page.tsx        (Dashboard overview, resolved at /[adminSegment])
+│   │   │       │   ├── anime/
+│   │   │       │   │   ├── page.tsx    (Browse Catalog)
+│   │   │       │   │   ├── new/       (Add Title)
+│   │   │       │   │   └── genres/    (Genres)
+│   │   │       │   ├── episodes/
+│   │   │       │   │   ├── page.tsx    (All Episodes)
+│   │   │       │   │   ├── new/       (Upload Episode)
+│   │   │       │   │   └── subtitles/ (Subtitles)
+│   │   │       │   ├── media/
+│   │   │       │   │   ├── sources/   (Video Sources)
+│   │   │       │   │   └── storage/   (Storage R2)
+│   │   │       │   ├── users/
+│   │   │       │   │   ├── page.tsx    (Accounts)
+│   │   │       │   │   ├── roles/     (Roles & Permissions)
+│   │   │       │   │   └── sessions/  (Sessions)
+│   │   │       │   ├── comments/
+│   │   │       │   │   ├── page.tsx    (Moderation)
+│   │   │       │   │   └── reported/  (Reported)
+│   │   │       │   └── settings/
+│   │   │       │       ├── page.tsx    (Site Config)
+│   │   │       │       └── tokens/    (API Tokens)
 │   │   │
 │   │   ├── api/
 │   │   │
@@ -124,6 +143,11 @@ anime-streaming/
 │   │   ├── subscription/
 │   │   │
 │   │   └── admin/
+│   │       ├── components/
+│   │       └── layout/
+│   │           ├── AdminSidebar.tsx
+│   │           ├── NavMain.tsx
+│   │           └── NavUser.tsx
 │   │
 │   ├── modules/
 │   │

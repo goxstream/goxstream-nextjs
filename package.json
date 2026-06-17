@@ -13,7 +13,17 @@
 		"upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
 		"preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
 		"cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
-		"typecheck": "npx tsc --noEmit"
+		"typecheck": "npx tsc --noEmit",
+		"db:seed:gen": "npx tsx scripts/seed.ts",
+		"db:seed:anime": "npx wrangler d1 execute DB --local --file=scripts/seeds/sql/anime.sql",
+		"db:seed:user": "npx wrangler d1 execute DB --local --file=scripts/seeds/sql/user.sql",
+		"db:seed:admin": "npx wrangler d1 execute DB --local --file=scripts/seeds/sql/admin.sql",
+		"db:seed:anime:remote": "npx wrangler d1 execute DB --remote --file=scripts/seeds/sql/anime.sql",
+		"db:seed:user:remote": "npx wrangler d1 execute DB --remote --file=scripts/seeds/sql/user.sql",
+		"db:seed:admin:remote": "npx wrangler d1 execute DB --remote --file=scripts/seeds/sql/admin.sql"
+
+
+
 	},
 	"keywords": [
 		"DyzulkDev",
@@ -68,6 +78,7 @@
 		"eslint-config-next": "16.2.6",
 		"shadcn": "^4.11.0",
 		"tailwindcss": "^4",
+		"tsx": "^4.22.4",
 		"typescript": "^5.7.4",
 		"wrangler": "^4.100.0"
 	}
