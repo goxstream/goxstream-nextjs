@@ -31,6 +31,10 @@ Guidelines for developing within the Next.js 16 App Router and React 19 environm
 - Use standard `NextResponse` for JSON delivery.
 - Handle authentication and origin validation dynamically.
 
+## Environment Variables Naming
+- Environment variables related to the GoxStream domain logic, APIs, or private credentials MUST always be prefixed with `GOX_` (e.g., `GOX_DATABASE_URL`, `GOX_ADMIN_SLUG`).
+- Environment variables exposed to the Next.js browser client MUST be prefixed with `NEXT_PUBLIC_` (e.g., `NEXT_PUBLIC_APP_URL`).
+
 ## Common Pitfalls
 - Adding `"use client"` unnecessarily to container files or layout components.
 - Importing server-only dependencies inside Client Components (use `import "server-only"` to guard server modules).

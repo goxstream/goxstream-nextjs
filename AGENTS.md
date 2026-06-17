@@ -18,10 +18,12 @@ This application is built using Next.js 16 App Router, React 19, Tailwind CSS v4
 This repository contains local agent skills structured inside the `.agents/skills/` directory. You MUST activate the relevant skill whenever working on tasks within its domain:
 
 - `next-app-router-development`: Applied when creating or modifying pages, layouts, templates, React Server Components (RSC), Client Components, Server Actions, or route handlers.
-- `cloudflare-development`: Applied when working with Cloudflare Workers configurations, D1 databases, R2 bucket operations, KV caching, or Queues.
+- `cloudflare-development`: Applied when working with Cloudflare Workers configurations, R2 bucket operations, KV caching, or Queues.
+- `cloudflare-d1-development`: Applied when writing D1 queries, managing Drizzle/D1 migrations, executing Wrangler D1 commands, or initializing D1 database clients.
 - `drizzle-orm-development`: Applied when writing database schemas, relations, creating migrations, or running seeding operations.
 - `tailwindcss-v4-development`: Applied when writing styles, editing theme tokens, utility classes, and layouts.
 - `shadcn-ui-development`: Applied when using shadcn CLI or installing components.
+
 
 ## Conventions
 
@@ -46,6 +48,10 @@ This repository contains local agent skills structured inside the `.agents/skill
 ### 5. Formatting & Styles
 - Avoid writing raw or vanilla CSS in components. Always use Tailwind CSS v4 utility classes.
 - Theme tokens must be declared using the `@theme` directive in `src/styles/globals.css`.
+
+### 6. Environment Variables Naming
+- Environment variables related to the GoxStream domain logic, backend APIs, services, or private server credentials MUST be prefixed with `GOX_` (e.g., `GOX_DATABASE_URL`, `GOX_ANILIST_API_KEY`, `GOX_ADMIN_SLUG`).
+- Environment variables intended for exposure to the Next.js client-side browser (accessible in Client Components) MUST be prefixed with `NEXT_PUBLIC_` (e.g., `NEXT_PUBLIC_APP_URL`).
 
 ## Engineering Workflow
 

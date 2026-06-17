@@ -1,9 +1,10 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Play, ArrowLeft, Star, Calendar, Volume2, Maximize2, SkipForward, SkipBack, Settings, Info, ListVideo } from "lucide-react";
+import { Play, ArrowLeft, Star, Calendar, ListVideo } from "lucide-react";
 import Footer from "@/components/layout/Footer";
 import { AnimeService } from "@/modules/anime/services/animeService";
+import VideoPlayer from "@/features/watch/components/VideoPlayer";
 
 interface PageProps {
   params: Promise<{
@@ -56,103 +57,12 @@ export default async function WatchPage({ params }: PageProps) {
           {/* Main Column: Video Player & Episode Info */}
           <div className="lg:col-span-3 flex flex-col gap-6">
             
-            {/* Mock Video Player */}
-            <div className="group relative aspect-video w-full overflow-hidden rounded-none md:rounded-2xl bg-black border-y md:border border-white/5 shadow-2xl">
-              {/* Background Art / Thumbnail */}
-              <Image
-                src={anime.bannerImage}
-                alt={currentEpisode.title}
-                fill
-                className="object-cover opacity-60 blur-xs transition-transform duration-700 group-hover:scale-101"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/30" />
-              
-              {/* Center Play Button Overlay */}
-              <div className="absolute inset-0 flex items-center justify-center cursor-pointer">
-                <div className="rounded-full bg-primary/95 p-5 text-primary-foreground transform scale-100 transition-all duration-300 hover:scale-110 shadow-lg shadow-primary/30 group-hover:scale-105">
-                  <Play className="h-10 w-10 fill-current ml-1" />
-                </div>
-              </div>
-
-              {/* Watermark Logo */}
-              <div className="absolute top-4 right-6 text-white/40 font-heading font-black tracking-wider text-sm select-none">
-                GOXSTREAM
-              </div>
-              
-              {/* Floating Bottom Controller Bar */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col gap-3 translate-y-1 opacity-90 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                
-                {/* Progress Bar */}
-                <div className="w-full flex items-center gap-3 cursor-pointer">
-                  <div className="h-1 w-full bg-white/20 rounded-full relative overflow-hidden group/bar hover:h-1.5 transition-all">
-                    <div className="absolute left-0 top-0 h-full w-[35%] bg-primary rounded-full" />
-                    <div className="absolute left-[35%] top-1/2 -translate-y-1/2 h-3 w-3 bg-primary rounded-full opacity-0 group-hover/bar:opacity-100 transition-opacity" />
-                  </div>
-                  <span className="text-xs font-mono text-white/80 select-none">08:24 / 24:00</span>
-                </div>
-
-                {/* Media Control Buttons */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    {/* Previous Episode Button */}
-                    {prevEp ? (
-                      <Link 
-                        href={`/anime/${slug}/${prevEp}`}
-                        className="text-white/80 hover:text-primary transition-colors"
-                        title={`Episode ${prevEp}`}
-                      >
-                        <SkipBack className="h-5 w-5 fill-current" />
-                      </Link>
-                    ) : (
-                      <button className="text-white/20 cursor-not-allowed" disabled>
-                        <SkipBack className="h-5 w-5 fill-current" />
-                      </button>
-                    )}
-
-                    {/* Play Button */}
-                    <button className="text-white hover:text-primary transition-colors">
-                      <Play className="h-5 w-5 fill-current" />
-                    </button>
-
-                    {/* Next Episode Button */}
-                    {nextEp ? (
-                      <Link 
-                        href={`/anime/${slug}/${nextEp}`}
-                        className="text-white/80 hover:text-primary transition-colors"
-                        title={`Episode ${nextEp}`}
-                      >
-                        <SkipForward className="h-5 w-5 fill-current" />
-                      </Link>
-                    ) : (
-                      <button className="text-white/20 cursor-not-allowed" disabled>
-                        <SkipForward className="h-5 w-5 fill-current" />
-                      </button>
-                    )}
-
-                    <div className="h-4 w-px bg-white/20" />
-
-                    {/* Volume Button */}
-                    <button className="text-white/80 hover:text-primary transition-colors">
-                      <Volume2 className="h-5 w-5" />
-                    </button>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    {/* Settings Button */}
-                    <button className="text-white/80 hover:text-primary transition-colors">
-                      <Settings className="h-5 w-5" />
-                    </button>
-
-                    {/* Fullscreen Button */}
-                    <button className="text-white/80 hover:text-primary transition-colors">
-                      <Maximize2 className="h-5 w-5" />
-                    </button>
-                  </div>
-                </div>
-
-              </div>
-            </div>
+            {/* Video Player */}
+            <VideoPlayer
+              src="https://files.vidstack.io/sprite-fight/hls/720p/stream.m3u8"
+              poster={anime.bannerImage}
+              title={`${anime.title} - Episode ${currentEpisode.episodeNumber}`}
+            />
 
             {/* Episode Details Description */}
             <div className="px-4 md:px-0">

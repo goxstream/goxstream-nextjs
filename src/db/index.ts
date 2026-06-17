@@ -9,3 +9,15 @@ export function getDb() {
   }
   return drizzle(env.DB, { schema });
 }
+
+// Lazy database proxy to avoid top-level getCloudflareContext() invocation during module evaluation
+export const db = new Proxy({} as ReturnType<typeof getDb>, {
+  get(target, prop, receiver) {
+    const actualDb = getDb();
+    const value = Reflect.get(actualDb, prop);
+    if (typeof value === "function") {
+      return value.bind(actualDb);
+    }
+    return value;
+  }
+});

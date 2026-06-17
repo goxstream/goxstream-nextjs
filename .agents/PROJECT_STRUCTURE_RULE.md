@@ -65,11 +65,14 @@ anime-streaming/
 │   │   │           └── watch/
 │   │   │               └── page.tsx    (Video player resolved at /anime/:slug/watch)
 │   │   │
-│   │   ├── admin/
-│   │   │   ├── anime/
-│   │   │   ├── episodes/
-│   │   │   ├── users/
-│   │   │   └── reports/
+│   │   ├── (admin)/
+│   │   │   └── [adminSegment]/
+│   │   │       ├── layout.tsx          (Admin layout checking adminSegment against ADMIN_SLUG env)
+│   │   │       ├── page.tsx            (Dashboard home, resolved at /[adminSegment])
+│   │   │       ├── anime/
+│   │   │       ├── episodes/
+│   │   │       ├── users/
+│   │   │       └── reports/
 │   │   │
 │   │   ├── api/
 │   │   │
@@ -279,6 +282,7 @@ anime-streaming/
 - **`(app)`**: Contains core authenticated platform pages (profile, history). These routes are grouped under the main application layout (`(app)/layout.tsx`) containing sidebars, watch details, and user session configurations. They resolve to `/profile` and `/history`.
 - **`(catalog)`**: Contains the main interactive anime catalog homepage (`page.tsx` resolved at `/`) and all penelusuran paths (`browse/`, `genres/`, `anime/`). These routes are grouped under a catalog layout (`(catalog)/layout.tsx`) containing shared headers, sidebars, and search discovery structures.
 - **`(auth)`**: Contains the authentication routes, wrapped inside a clean centered layout (`(auth)/layout.tsx`) without headers or sidebars.
+- **`(admin)`**: Contains the administrative control panel pages. These routes are nested under a dynamic path parameter `[adminSegment]` (`src/app/(admin)/[adminSegment]/`). The layout (`layout.tsx`) validates the parameter against the server-side `GOX_ADMIN_SLUG` environment variable. If matched, it passes the slug down to the navigation components as a prop. This prevents exposing the secret admin path in public JavaScript client bundles.
 
 ### 2. Catalog Routing Strategy
 - Placing the catalog routes under `(catalog)` allows anonymous guests and signed-in users to share the same templates and components without duplicating the layout, making UI updates fully centralized.
