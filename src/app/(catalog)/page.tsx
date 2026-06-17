@@ -23,7 +23,7 @@ export default async function Home() {
 
   return (
     <div className="w-full max-w-[1920px] mx-auto pb-12">
-      {featured && <Hero anime={featured} />}
+      {featured && featured.length > 0 && <Hero animeList={featured} />}
       
       <AnimeRail title="Continue Watching" small>
         {continueWatching.map((anime) => (

@@ -97,10 +97,10 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
               {/* Quick Action CTAs */}
               <div className="flex items-center gap-3 pt-3">
                 <Link
-                  href={`/anime/${anime.slug}/play`}
+                  href={`/anime/${anime.slug}/${anime.episodeCount || 1}`}
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3 text-sm font-heading font-bold text-primary-foreground transition-all hover:bg-primary/90 hover:scale-105 shadow-lg shadow-primary/20"
                 >
-                  <Play className="h-4 w-4 fill-current" /> Play Episode 1
+                  <Play className="h-4 w-4 fill-current" /> Play Episode {anime.episodeCount || 1}
                 </Link>
                 <button
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-heading font-bold text-foreground transition-colors hover:bg-muted"
@@ -126,7 +126,7 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
                 {episodes.map((ep) => (
                   <Link
                     key={ep.id}
-                    href={`/anime/${anime.slug}/play?ep=${ep.episodeNumber}`}
+                    href={`/anime/${anime.slug}/${ep.episodeNumber}`}
                     className="group flex flex-col rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/50 transition-all hover:shadow-md"
                   >
                     <div className="relative aspect-video w-full overflow-hidden bg-muted">

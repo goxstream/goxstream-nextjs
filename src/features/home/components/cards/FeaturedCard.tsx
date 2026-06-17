@@ -40,7 +40,7 @@ export default function FeaturedCard({ anime }: { anime: Anime }) {
           
           <div className="flex items-center gap-3 pt-2">
             <Link 
-              href={`/anime/${anime.slug}/play`}
+              href={`/anime/${anime.slug}/${anime.episodeCount || 1}`}
               className="flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-2.5 font-heading font-bold text-primary-foreground transition-all hover:bg-primary/90 hover:scale-105"
             >
               <Play className="h-4 w-4 fill-current" /> Play Now

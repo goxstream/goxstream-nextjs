@@ -101,7 +101,7 @@ export class AnimeService {
     const continueWatching = list.slice(0, 5);
     const recommended = list.slice(5, 10);
     const seasonal = list.filter(a => a.year === 2024 && a.quarter === "Winter").slice(0, 5);
-    const featured = trending[0] || list[0];
+    const featured = trending;
 
     return {
       trending,

@@ -1,19 +1,15 @@
 import Link from 'next/link';
 import { Search, User, Menu, Bell } from 'lucide-react';
+import { LogoType } from '@/components/Logo';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center px-4 md:px-8">
         <div className="mr-4 flex">
-          <button className="mr-2 md:hidden inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-9 w-9">
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle Menu</span>
-          </button>
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-heading font-bold text-xl text-primary">
-              GoxStream
-            </span>
+          <Link href="/" className="mr-6 flex items-center">
+            <LogoType className="h-6 w-auto" />
           </Link>
         </div>
         
@@ -29,10 +25,11 @@ export default function Header() {
             </div>
           </div>
           <nav className="flex items-center space-x-2">
+            <ThemeToggle />
             <button className="inline-flex items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-accent-foreground h-9 w-9 transition-colors">
               <Bell className="h-5 w-5" />
             </button>
-            <button className="inline-flex items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-accent-foreground h-9 w-9 transition-colors">
+            <button className="hidden md:inline-flex items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-accent-foreground h-9 w-9 transition-colors">
               <User className="h-5 w-5" />
             </button>
           </nav>
@@ -41,3 +38,4 @@ export default function Header() {
     </header>
   );
 }
+
