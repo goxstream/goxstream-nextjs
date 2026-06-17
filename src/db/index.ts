@@ -1,13 +1,10 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { drizzle } from "drizzle-orm/d1";
 import * as schema from "./schema";
+import { getD1Binding } from "@/cloudflare/bindings/d1";
 
 export function getDb() {
-  const { env } = getCloudflareContext();
-  if (!env || !env.DB) {
-    throw new Error("Cloudflare D1 binding 'DB' not found. Please ensure you are running the server with Wrangler.");
-  }
-  return drizzle(env.DB, { schema });
+  const dbBinding = getD1Binding();
+  return drizzle(dbBinding, { schema });
 }
 
 // Lazy database proxy to avoid top-level getCloudflareContext() invocation during module evaluation
