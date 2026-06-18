@@ -5,4 +5,5 @@ export * from "./media";
 export * from "./interactions";
 export * from "./system";
 export * from "./genres";
+export * from "./ratings";
 

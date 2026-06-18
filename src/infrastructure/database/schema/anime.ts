@@ -19,6 +19,9 @@ export const anime = sqliteTable("anime", {
   status: text("status").$type<"Ongoing" | "Completed" | "Upcoming">(),
   rating: real("rating"),
   popularity: integer("popularity").default(0),
+  bayesianRating: real("bayesian_rating").default(0.0),
+  trendingScore: real("trending_score").default(0.0),
+  voterCount: integer("voter_count").default(0),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .default(sql`(strftime('%s', 'now'))`),

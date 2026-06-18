@@ -1,7 +1,5 @@
 import { db } from "@/infrastructure/database/client";
-import { anime as animeTable } from "@/infrastructure/database/schema/anime";
-import { watchHistory as watchHistoryTable } from "@/infrastructure/database/schema/interactions";
-import { episodes as episodesTable } from "@/infrastructure/database/schema/media";
+import { anime as animeTable, watchHistory as watchHistoryTable, episodes as episodesTable } from "@/infrastructure/database/schema";
 import { eq, ne, inArray } from "drizzle-orm";
 import { calculateCosineSimilarity } from "../utils/similarity";
 import { TrendingService } from "./trending.service";
@@ -15,7 +13,7 @@ export class RecommendationService {
   async getRecommendationsForAnime(targetAnimeId: string, limit: number = 5): Promise<any[]> {
     try {
       // 1. Fetch target anime with its genres
-      const targetAnime = await db.query.anime.findFirst({
+      const targetAnime = (await db.query.anime.findFirst({
         where: eq(animeTable.id, targetAnimeId),
         with: {
           genres: {
@@ -24,14 +22,14 @@ export class RecommendationService {
             },
           },
         },
-      });
+      })) as any;
 
       if (!targetAnime) {
         return [];
       }
 
-      const targetGenreIds = new Set(
-        targetAnime.genres?.map((g: any) => g.genreId).filter(Boolean) || []
+      const targetGenreIds = new Set<string>(
+        (targetAnime.genres as any[])?.map((g: any) => g.genreId).filter(Boolean) || []
       );
 
       if (targetGenreIds.size === 0) {
@@ -53,7 +51,7 @@ export class RecommendationService {
 
       // 3. Compile the union of all unique genre IDs between target and candidates
       const allGenreIdsSet = new Set<string>(targetGenreIds);
-      otherAnimeList.forEach((item) => {
+      otherAnimeList.forEach((item: any) => {
         item.genres?.forEach((g: any) => {
           if (g.genreId) allGenreIdsSet.add(g.genreId);
         });
@@ -69,7 +67,7 @@ export class RecommendationService {
       const targetVector = buildVector(targetGenreIds);
 
       // 4. Calculate similarity score for each candidate
-      const candidates = otherAnimeList.map((item) => {
+      const candidates = otherAnimeList.map((item: any) => {
         const itemGenreIds = new Set<string>(
           item.genres?.map((g: any) => g.genreId).filter(Boolean) || []
         );
@@ -120,7 +118,7 @@ export class RecommendationService {
       }
 
       // 2. Fetch all anime user has watched to calculate genre weights
-      const watchedAnimeList = await db.query.anime.findMany({
+      const watchedAnimeList = (await db.query.anime.findMany({
         where: inArray(animeTable.id, watchedAnimeIds),
         with: {
           genres: {
@@ -129,11 +127,11 @@ export class RecommendationService {
             },
           },
         },
-      });
+      })) as any[];
 
       // 3. Aggregate genre frequency to build user preference profile
       const userGenreWeights = new Map<string, number>();
-      watchedAnimeList.forEach((item) => {
+      watchedAnimeList.forEach((item: any) => {
         item.genres?.forEach((g: any) => {
           if (g.genreId) {
             userGenreWeights.set(g.genreId, (userGenreWeights.get(g.genreId) || 0) + 1);
@@ -146,7 +144,7 @@ export class RecommendationService {
       }
 
       // 4. Fetch all unwatched anime candidates
-      const candidateList = await db.query.anime.findMany({
+      const candidateList = (await db.query.anime.findMany({
         with: {
           genres: {
             with: {
@@ -154,7 +152,7 @@ export class RecommendationService {
             },
           },
         },
-      });
+      })) as any[];
 
       // Filter out already watched anime from candidates
       const unwatchedCandidates = candidateList.filter(
@@ -163,7 +161,7 @@ export class RecommendationService {
 
       // Collect all unique genre IDs
       const allGenreIdsSet = new Set<string>(userGenreWeights.keys());
-      unwatchedCandidates.forEach((item) => {
+      unwatchedCandidates.forEach((item: any) => {
         item.genres?.forEach((g: any) => {
           if (g.genreId) allGenreIdsSet.add(g.genreId);
         });
@@ -179,7 +177,7 @@ export class RecommendationService {
       };
 
       // 6. Calculate Cosine Similarity with user vector
-      const scoredCandidates = unwatchedCandidates.map((item) => {
+      const scoredCandidates = unwatchedCandidates.map((item: any) => {
         const itemGenreIds = new Set<string>(
           item.genres?.map((g: any) => g.genreId).filter(Boolean) || []
         );
