@@ -84,6 +84,17 @@
 	"observability": {
 		"enabled": true
 	},
+	"analytics_engine_datasets": [
+		{
+			"binding": "TELEMETRY_DATASET",
+			"dataset": "goxstream_telemetry"
+		}
+	],
+	"send_email": [
+		{
+			"name": "EMAIL"
+		}
+	],
 	"upload_source_maps": true,
 	"keep_vars": true,
 	"keep_names": false,
