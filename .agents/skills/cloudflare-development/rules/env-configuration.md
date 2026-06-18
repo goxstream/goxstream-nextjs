@@ -39,6 +39,7 @@ When deploying to Cloudflare Workers, environment variables are split into two c
 * **Characteristics**:
   * **Required** for all dynamic routes, Server Actions, API Routes, and Middleware.
   * Passed dynamically by the Cloudflare Workers container into the worker context object.
+  * **`keep_vars` Option**: Setting `"keep_vars": true` in `wrangler.jsonc` tells Wrangler to preserve any manually added variables on the Cloudflare Dashboard during deployment, preventing them from being overwritten or deleted.
 
 ---
 
@@ -64,17 +65,17 @@ These variables configure local server settings and authentication, and must be 
 * **`GOX_ADMIN_SLUG`**:
   * **Value**: `backstage`
   * **Classification**: **Runtime Environment Variable**
-  * **Usage**: Checked dynamically on each request to `/[adminSegment]` in the admin layout. Since the route is dynamic (`ƒ`), it must be available at request-time.
+  * **Usage**: Checked dynamically on each request to `/[adminSegment]` in the admin layout. Since the route is dynamic (`ƒ`), it must be available at request-time. Managed in `wrangler.jsonc` under `"vars"`.
 
 * **`BETTER_AUTH_SECRET`**:
   * **Value**: `[YOUR_BETTER_AUTH_SECRET_KEY]` (e.g., a 32-character random string)
   * **Classification**: **Runtime Environment Variable (Secret)**
-  * **Usage**: Required at runtime by Better Auth to encrypt session cookies and tokens. Must be configured as an encrypted **Secret** in Cloudflare Dashboard.
+  * **Usage**: Required at runtime by Better Auth to encrypt session cookies and tokens. Must be configured as an encrypted **Secret** in Cloudflare Dashboard (not in wrangler.jsonc for security).
 
 * **`BETTER_AUTH_URL`**:
   * **Value**: `http://localhost:3000` (Local) / `https://goxstream-nextjs.dyzulk.workers.dev` (Production)
   * **Classification**: **Runtime Environment Variable**
-  * **Usage**: Required by Better Auth to construct absolute URIs for redirects and cookie domains at request-time.
+  * **Usage**: Required by Better Auth to construct absolute URIs for redirects and cookie domains at request-time. Managed in `wrangler.jsonc` under `"vars"`.
 
 ### 2. Variables in `.dev.vars` (Wrangler Local Env)
 

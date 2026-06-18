@@ -38,7 +38,7 @@
 			"database_name": "goxstream-nextjs",
 			"database_id": "2449ddfe-708e-479b-b35c-dfe24896e5f5",
 			"preview_database_id": "DB",
-			"migrations_dir": "drizzle/migrations"
+			"migrations_dir": "src/infrastructure/database/migrations"
 		}
 	],
 	"kv_namespaces": [
@@ -85,6 +85,7 @@
 		"enabled": true
 	},
 	"upload_source_maps": true,
+	"keep_vars": true,
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
@@ -103,6 +104,8 @@
 	 * https://developers.cloudflare.com/workers/configuration/secrets/
 	 */
 	"vars": {
-		"NEXT_PRIVATE_MINIMAL_MODE": "1"
+		"NEXT_PRIVATE_MINIMAL_MODE": "1",
+		"GOX_ADMIN_SLUG": "backstage",
+		"BETTER_AUTH_URL": "https://goxstream-nextjs.dyzulk.workers.dev"
 	}
 }
