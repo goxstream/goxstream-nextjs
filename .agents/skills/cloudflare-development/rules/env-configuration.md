@@ -53,6 +53,45 @@ When deploying to Cloudflare Workers, environment variables are split into two c
 
 ---
 
+## Current Project Environment Variables (Daftar Env Saat Ini)
+
+Below is the classification and detailed list of all environment variables currently defined in the GoxStream project files:
+
+### 1. Variables in `.env` (Next.js Local Env)
+
+These variables configure local server settings and authentication, and must be deployed to the **Runtime Variables & Secrets** (not build variables) in Cloudflare Production:
+
+* **`GOX_ADMIN_SLUG`**:
+  * **Value**: `backstage`
+  * **Classification**: **Runtime Environment Variable**
+  * **Usage**: Checked dynamically on each request to `/[adminSegment]` in the admin layout. Since the route is dynamic (`ƒ`), it must be available at request-time.
+
+* **`BETTER_AUTH_SECRET`**:
+  * **Value**: `[YOUR_BETTER_AUTH_SECRET_KEY]` (e.g., a 32-character random string)
+  * **Classification**: **Runtime Environment Variable (Secret)**
+  * **Usage**: Required at runtime by Better Auth to encrypt session cookies and tokens. Must be configured as an encrypted **Secret** in Cloudflare Dashboard.
+
+* **`BETTER_AUTH_URL`**:
+  * **Value**: `http://localhost:3000` (Local) / `https://goxstream-nextjs.dyzulk.workers.dev` (Production)
+  * **Classification**: **Runtime Environment Variable**
+  * **Usage**: Required by Better Auth to construct absolute URIs for redirects and cookie domains at request-time.
+
+### 2. Variables in `.dev.vars` (Wrangler Local Env)
+
+These variables are used to mimic production Workers configuration locally:
+
+* **`NEXTJS_ENV`**:
+  * **Value**: `development`
+  * **Classification**: **Build and Runtime Environment Variable**
+  * **Usage**: Configures Next.js/OpenNext runtime mode.
+
+* **`NEXT_PRIVATE_MINIMAL_MODE`**:
+  * **Value**: `1`
+  * **Classification**: **Build and Runtime Environment Variable**
+  * **Usage**: Minimizes the Next.js production server footprint. Configured statically in `wrangler.jsonc` under `"vars"`.
+
+---
+
 ## Access Guidelines & Conventions
 
 ### 1. Naming Conventions
