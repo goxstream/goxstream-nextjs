@@ -1,9 +1,9 @@
-import { db } from "@/infrastructure/database/client";
-import { anime } from "@/infrastructure/database/schema";
+import { AnimeService } from "@/modules/anime/services/animeService";
 
 export async function getAnimeList() {
   try {
-    const listAnime = await db.select().from(anime).all();
+    const animeService = new AnimeService();
+    const listAnime = await animeService.getAnimeList();
     return Response.json({ data: listAnime });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Internal server error";

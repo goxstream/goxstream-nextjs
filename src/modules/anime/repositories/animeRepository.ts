@@ -1,5 +1,5 @@
 import { db } from "@/infrastructure/database/client";
-import { anime as animeTable, episodes as episodesTable } from "@/infrastructure/database/schema";
+import { anime as animeTable, episodes as episodesTable, animeGenres as animeGenresTable } from "@/infrastructure/database/schema";
 import { eq, desc } from "drizzle-orm";
 
 export class AnimeRepository {
@@ -49,5 +49,19 @@ export class AnimeRepository {
       .where(eq(episodesTable.animeId, animeId))
       .orderBy(episodesTable.episodeNumber)
       .all();
+  }
+
+  async create(animeData: typeof animeTable.$inferInsert, genreIds: string[]) {
+    await db.transaction(async (tx) => {
+      await tx.insert(animeTable).values(animeData).run();
+
+      if (genreIds.length > 0) {
+        const relations = genreIds.map((genreId) => ({
+          animeId: animeData.id,
+          genreId,
+        }));
+        await tx.insert(animeGenresTable).values(relations).run();
+      }
+    });
   }
 }

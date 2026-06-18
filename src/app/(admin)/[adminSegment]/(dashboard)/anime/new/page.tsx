@@ -1,7 +1,15 @@
-import { Film } from "lucide-react";
-import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/components/ui/empty";
+import { AnimeService } from "@/modules/anime/services/animeService";
+import { AnimeForm } from "@/features/admin/components/anime-form";
 
-export default function AdminAnimeNewPage() {
+interface AdminAnimeNewPageProps {
+  params: Promise<{ adminSegment: string }>;
+}
+
+export default async function AdminAnimeNewPage({ params }: AdminAnimeNewPageProps) {
+  const { adminSegment } = await params;
+  const animeService = new AnimeService();
+  const genres = await animeService.getAdminGenreList();
+
   return (
     <div className="space-y-6">
       <div>
@@ -9,17 +17,7 @@ export default function AdminAnimeNewPage() {
         <p className="text-muted-foreground mt-1">Register a new anime title to the catalog.</p>
       </div>
 
-      <Empty className="border border-dashed border-border bg-muted/20 p-12 rounded-xl">
-        <EmptyHeader>
-          <EmptyMedia variant="icon" className="bg-muted border border-border text-foreground">
-            <Film className="h-4 w-4" />
-          </EmptyMedia>
-          <EmptyTitle>Add Anime Form</EmptyTitle>
-          <EmptyDescription>
-            Anime creation form is currently under development.
-          </EmptyDescription>
-        </EmptyHeader>
-      </Empty>
+      <AnimeForm genres={genres} adminSegment={adminSegment} />
     </div>
   );
 }

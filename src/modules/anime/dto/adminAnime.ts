@@ -1,3 +1,6 @@
+import { z } from "zod";
+import { createAnimeSchema } from "../schemas/createAnimeSchema";
+
 export interface AdminAnimeRow {
   id: string;
   title: string;
@@ -20,4 +23,6 @@ export interface AdminGenreRow {
   slug: string;
   animeCount: number;
 }
+
+export type CreateAnimeInput = z.infer<typeof createAnimeSchema>;
 

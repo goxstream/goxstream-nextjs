@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/features/admin/components/data-table/DataTable";
-import { animeColumns } from "@/features/admin/components/AnimeColumns";
+import { animeColumns } from "@/features/admin/components/anime-columns";
 import { AnimeService } from "@/modules/anime/services/animeService";
 
 interface AdminAnimePageProps {

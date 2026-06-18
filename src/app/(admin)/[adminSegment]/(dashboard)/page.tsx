@@ -1,7 +1,7 @@
 import { db } from "@/infrastructure/database/client";
 import { users, anime, episodes, comments } from "@/infrastructure/database/schema";
 import { count } from "drizzle-orm";
-import { DashboardOverview } from "@/features/admin/components/DashboardOverview";
+import { DashboardOverview } from "@/features/admin/components/dashboard-overview";
 
 export default async function AdminDashboardPage() {
 

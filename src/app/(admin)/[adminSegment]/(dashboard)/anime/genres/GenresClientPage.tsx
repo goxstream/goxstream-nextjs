@@ -4,8 +4,7 @@ import * as React from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/features/admin/components/data-table/DataTable";
-import { getGenreColumns } from "@/features/admin/components/GenreColumns";
-import { GenreActionDialogs } from "@/features/admin/components/GenreActionDialogs";
+import { getGenreColumns, GenreActionDialogs } from "@/features/admin/components/genre-management";
 import type { AdminGenreRow } from "@/modules/anime/dto/adminAnime";
 
 interface GenresClientPageProps {

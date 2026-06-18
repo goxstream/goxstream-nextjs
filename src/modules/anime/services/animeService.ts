@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { AnimeRepository } from "../repositories/animeRepository";
 import type { Anime } from "../types";
-import type { AdminAnimeRow, AdminGenreRow } from "../dto/adminAnime";
+import type { AdminAnimeRow, AdminGenreRow, CreateAnimeInput } from "../dto/adminAnime";
 import { db } from "@/infrastructure/database/client";
 import { genres as genresTable, animeGenres as animeGenresTable } from "@/infrastructure/database/schema";
 import { count, eq } from "drizzle-orm";
@@ -30,6 +30,31 @@ export class AnimeService {
       }));
     } catch (error) {
       console.error("Failed to fetch admin anime list:", error);
+      return [];
+    }
+  }
+
+  async getAnimeList(): Promise<Anime[]> {
+    try {
+      const list = await this.repository.findAll();
+      
+      return list.map((a: any) => ({
+        id: a.id,
+        title: a.title,
+        slug: a.slug,
+        coverImage: a.coverImage,
+        bannerImage: a.bannerImage,
+        synopsis: a.synopsis || "",
+        genres: a.genres?.map((g: any) => g.genre.name) || [],
+        year: a.year || new Date().getFullYear(),
+        quarter: (a.quarter as any) || "Winter",
+        episodeCount: a.episodeCount || 0,
+        status: (a.status as any) || "Ongoing",
+        rating: Number(a.rating) || 0,
+        popularity: a.popularity || 0,
+      }));
+    } catch (error) {
+      console.error("Failed to fetch anime list from DB:", error);
       return [];
     }
   }
@@ -149,6 +174,32 @@ export class AnimeService {
 
   async deleteGenre(id: string) {
     await db.delete(genresTable).where(eq(genresTable.id, id)).run();
+  }
+
+  async createAnime(input: CreateAnimeInput) {
+    const existing = await this.repository.findBySlug(input.slug);
+    if (existing) {
+      throw new Error(`Anime with slug "${input.slug}" already exists`);
+    }
+
+    const animeId = `anime-${input.slug}`;
+
+    const animeData = {
+      id: animeId,
+      title: input.title,
+      slug: input.slug,
+      coverImage: input.coverImage,
+      bannerImage: input.bannerImage,
+      synopsis: input.synopsis || null,
+      year: input.year || null,
+      quarter: input.quarter || null,
+      episodeCount: input.episodeCount || null,
+      status: input.status || null,
+      rating: input.rating != null ? Number(input.rating) : null,
+      popularity: input.popularity ?? 0,
+    };
+
+    await this.repository.create(animeData, input.genreIds || []);
   }
 
   private partitionCategories(list: Anime[]) {
