@@ -3,18 +3,18 @@
 Managing the SQLite database state requires synchronizing changes between Drizzle schemas, generated migrations, and the D1 database binding instances.
 
 ## 1. Schema Generation
-When updates are made to schemas in `src/db/schema.ts` (or files in `src/infrastructure/database/drizzle/schema/`):
+When updates are made to schemas in files under `src/infrastructure/database/schema/`:
 
 ```bash
 npx drizzle-kit generate
 ```
-This generates the relevant `.sql` migration files under the `drizzle/` or `drizzle/migrations/` directory.
+This generates the relevant `.sql` migration files under the `src/infrastructure/database/migrations/` directory.
 
 ## 2. Local D1 Migrations
 Apply the generated `.sql` migration files directly to the local development environment using Wrangler:
 
 ```bash
-npx wrangler d1 execute DB --local --file=drizzle/migrations/0000_xxxx.sql
+npx wrangler d1 execute DB --local --file=src/infrastructure/database/migrations/0000_xxxx.sql
 ```
 *Note: Replace `0000_xxxx.sql` with your generated migration file name.*
 
@@ -22,7 +22,7 @@ npx wrangler d1 execute DB --local --file=drizzle/migrations/0000_xxxx.sql
 Apply migrations to the remote production D1 instance:
 
 ```bash
-npx wrangler d1 execute DB --remote --file=drizzle/migrations/0000_xxxx.sql
+npx wrangler d1 execute DB --remote --file=src/infrastructure/database/migrations/0000_xxxx.sql
 ```
 
 ## 4. Diagnostic SQL Execution

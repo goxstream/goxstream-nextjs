@@ -11,7 +11,7 @@ metadata:
 Guidelines for building, initializing, managing, and querying Cloudflare D1 databases in Next.js, Cloudflare Workers, and Drizzle ORM environments.
 
 ## Consistency First
-- Verify database binding names in `wrangler.jsonc` match references in `src/db/index.ts` and related interfaces.
+- Verify database binding names in `wrangler.jsonc` match references in `src/infrastructure/database/client.ts` and related interfaces.
 - Avoid raw SQLite query executions. Always query via the Drizzle ORM client interface.
 
 ## Quick Reference

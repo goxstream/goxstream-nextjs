@@ -8,7 +8,7 @@ When Next.js / Turbopack builds the dependency graph (during `next dev` startup 
 
 If your configuration files call `getCloudflareContext()` directly at the top level of the file:
 ```typescript
-// src/lib/auth/user.ts
+// src/modules/auth/services/authUser.ts
 const db = getDb(); // Calls getCloudflareContext() globally
 
 export const auth = betterAuth({
@@ -28,7 +28,7 @@ To defer the execution of `getCloudflareContext()` until runtime (when the serve
 Define the proxy inside the main database entrypoint:
 
 ```typescript
-// src/db/index.ts
+// src/infrastructure/database/client.ts
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { drizzle } from "drizzle-orm/d1";
 import * as schema from "./schema";
@@ -59,8 +59,8 @@ export const db = new Proxy({} as ReturnType<typeof getDb>, {
 Instead of calling `getDb()` directly inside configurations (like Better Auth or third-party adapters), pass the lazy `db` proxy:
 
 ```typescript
-// src/lib/auth/user.ts
-import { db } from "@/db"; // Import the Proxy db
+// src/modules/auth/services/authUser.ts
+import { db } from "@/infrastructure/database/client"; // Import the Proxy db
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 

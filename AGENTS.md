@@ -76,14 +76,14 @@ This repository contains local agent skills structured inside the `.agents/skill
   ```
 
 ### 3. Drizzle Schema Updates
-- When updating schemas in `src/infrastructure/database/drizzle/schema/`:
+- When updating schemas in `src/infrastructure/database/schema/`:
   1. Generate migrations:
      ```bash
      npx drizzle-kit generate
      ```
   2. Apply migrations locally or to preview D1:
      ```bash
-     npx wrangler d1 execute DB --local --file=drizzle/migrations/0000_xxxx.sql
+     npx wrangler d1 execute DB --local --file=src/infrastructure/database/migrations/0000_xxxx.sql
      ```
   3. Rebuild Cloudflare types:
      ```bash

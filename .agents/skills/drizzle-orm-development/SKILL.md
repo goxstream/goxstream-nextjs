@@ -1,6 +1,6 @@
 ---
 name: drizzle-orm-development
-description: "Activates when writing or modifying database schemas, relations, migrations, or seed scripts. Triggered by files in drizzle/, src/infrastructure/database/drizzle/schema/, drizzle.config.ts, or when running drizzle-kit CLI commands."
+description: "Activates when writing or modifying database schemas, relations, migrations, or seed scripts. Triggered by files in src/infrastructure/database/migrations/, src/infrastructure/database/schema/, drizzle.config.ts, or when running drizzle-kit CLI commands."
 license: MIT
 metadata:
   author: goxstream
@@ -11,7 +11,7 @@ metadata:
 Guidelines for writing type-safe schema definitions, configuring relationship mappings, and applying migrations to D1 SQLite database.
 
 ## consistency First
-- Check existing files inside `src/infrastructure/database/drizzle/schema/` to match column conventions (snake_case database names, camelCase property mapping).
+- Check existing files inside `src/infrastructure/database/schema/` to match column conventions (snake_case database names, camelCase property mapping).
 
 ## Quick Reference
 

@@ -181,7 +181,6 @@ anime-streaming/
 │   ├── infrastructure/
 │   │
 │   │   ├── database/
-│   │   │   ├── drizzle/
 │   │   │   ├── migrations/
 │   │   │   ├── client.ts
 │   │   │   └── schema/
@@ -286,8 +285,6 @@ anime-streaming/
 │   ├── integration/
 │   ├── e2e/
 │   └── performance/
-│
-├── drizzle/
 │
 ├── wrangler.jsonc
 ├── open-next.config.ts
