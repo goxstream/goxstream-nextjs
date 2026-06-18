@@ -8,3 +8,16 @@ export function getR2Binding(bindingName: string): R2Bucket {
   }
   return bucket as R2Bucket;
 }
+
+export function tryGetR2Binding(bindingName: string): R2Bucket | null {
+  try {
+    const env = getEnv() as any;
+    const bucket = env[bindingName];
+    if (bucket && typeof bucket.put === "function" && typeof bucket.get === "function") {
+      return bucket as R2Bucket;
+    }
+  } catch (error) {
+    // Fail silently when context is not available
+  }
+  return null;
+}
