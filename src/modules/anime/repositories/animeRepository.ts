@@ -1,10 +1,18 @@
 import { db } from "@/infrastructure/database/client";
 import { anime as animeTable, episodes as episodesTable } from "@/infrastructure/database/schema";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 export class AnimeRepository {
   async findAll() {
     return db.select().from(animeTable).all();
+  }
+
+  async findAllForAdmin() {
+    return db
+      .select()
+      .from(animeTable)
+      .orderBy(desc(animeTable.createdAt))
+      .all();
   }
 
   async findBySlug(slug: string) {

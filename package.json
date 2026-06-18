@@ -7,6 +7,7 @@
 		"dev": "next dev",
 		"build": "next build",
 		"build:webpack": "next build --webpack",
+		"build:on": "opennextjs-cloudflare build",
 		"start": "next start",
 		"lint": "eslint .",
 		"deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
@@ -21,9 +22,6 @@
 		"db:seed:anime:remote": "npx wrangler d1 execute DB --remote --file=scripts/seeds/sql/anime.sql",
 		"db:seed:user:remote": "npx wrangler d1 execute DB --remote --file=scripts/seeds/sql/user.sql",
 		"db:seed:admin:remote": "npx wrangler d1 execute DB --remote --file=scripts/seeds/sql/admin.sql"
-
-
-
 	},
 	"keywords": [
 		"DyzulkDev",
@@ -40,6 +38,7 @@
 	"dependencies": {
 		"@base-ui/react": "^1.5.0",
 		"@opennextjs/cloudflare": "^1.19.9",
+		"@tanstack/react-table": "^8.21.3",
 		"@vidstack/react": "^0.6.15",
 		"better-auth": "^1.6.19",
 		"class-variance-authority": "^0.7.1",

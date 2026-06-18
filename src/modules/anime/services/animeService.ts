@@ -1,9 +1,35 @@
 import { notFound } from "next/navigation";
 import { AnimeRepository } from "../repositories/animeRepository";
 import type { Anime } from "../types";
+import type { AdminAnimeRow } from "../dto/adminAnime";
 
 export class AnimeService {
   private repository = new AnimeRepository();
+
+  async getAdminAnimeList(): Promise<AdminAnimeRow[]> {
+    try {
+      const list = await this.repository.findAllForAdmin();
+
+      return list.map((a) => ({
+        id: a.id,
+        title: a.title,
+        slug: a.slug,
+        coverImage: a.coverImage,
+        status: a.status as AdminAnimeRow["status"],
+        genres: (a.genres as string[]) || [],
+        year: a.year,
+        quarter: a.quarter as AdminAnimeRow["quarter"],
+        episodeCount: a.episodeCount,
+        rating: a.rating != null ? Number(a.rating) : null,
+        popularity: a.popularity ?? 0,
+        createdAt: a.createdAt instanceof Date ? a.createdAt : new Date((a.createdAt as number) * 1000),
+        updatedAt: a.updatedAt instanceof Date ? a.updatedAt : new Date((a.updatedAt as number) * 1000),
+      }));
+    } catch (error) {
+      console.error("Failed to fetch admin anime list:", error);
+      return [];
+    }
+  }
 
   async getHomepageData() {
     try {
