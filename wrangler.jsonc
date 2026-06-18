@@ -44,11 +44,11 @@
 	"kv_namespaces": [
 		{
 			"binding": "KV_CACHE",
-			"id": "goxstream-kv-cache"
+			"id": "237891e0bc2b44c8b1a5b8ac9ccff1db"
 		},
 		{
 			"binding": "KV_RATE_LIMIT",
-			"id": "goxstream-kv-rate-limit"
+			"id": "751b5e3dc0164fc1afd7e67f0df620f7"
 		}
 	],
 	"r2_buckets": [
