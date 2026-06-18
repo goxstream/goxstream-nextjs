@@ -9,7 +9,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "goxstream-nextjs",
-	"main": ".open-next/worker.js",
+	"main": "src/cloudflare/worker.ts",
 	"compatibility_date": "2026-06-12",
 	"compatibility_flags": [
 		"nodejs_compat",
