@@ -27,6 +27,10 @@ Guidelines for building applications with Cloudflare Workers, Pages, and storage
 - Implement file storage workflows and streaming using R2 buckets.
 - Set up background pipelines via Cloudflare Queues.
 
+### 4. Environment Variables → `rules/env-configuration.md`
+- Understand differences between build-time and runtime environment variables.
+- Manage local development variables using `.env` and `.dev.vars` configurations.
+
 ## Common Pitfalls
 - Storing secrets directly in `wrangler.jsonc` (use Wrangler secrets instead: `wrangler secret put SECRET_NAME`).
 - Attempting to read env variables on the server using `process.env` (always use `getRequestContext().env`).
