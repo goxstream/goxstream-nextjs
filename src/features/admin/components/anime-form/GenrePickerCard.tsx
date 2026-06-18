@@ -47,7 +47,7 @@ export function GenrePickerCard({
                   <Checkbox
                     id={genre.id}
                     checked={isChecked}
-                    onCheckedChange={() => {}}
+                    onCheckedChange={() => !loading && toggleGenre(genre.id)}
                     disabled={loading}
                     onClick={(e) => e.stopPropagation()}
                   />
