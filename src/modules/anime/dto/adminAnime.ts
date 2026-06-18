@@ -13,3 +13,11 @@ export interface AdminAnimeRow {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface AdminGenreRow {
+  id: string;
+  name: string;
+  slug: string;
+  animeCount: number;
+}
+

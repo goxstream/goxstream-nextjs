@@ -2,6 +2,7 @@ import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
 import { relations, sql } from "drizzle-orm";
 import { episodes } from "./media";
 import { bookmarks } from "./interactions";
+import { animeGenres } from "./genres";
 
 // --- Anime Metadata (Dummy-aligned) ---
 
@@ -12,7 +13,6 @@ export const anime = sqliteTable("anime", {
   coverImage: text("cover_image").notNull(),
   bannerImage: text("banner_image").notNull(),
   synopsis: text("synopsis"),
-  genres: text("genres", { mode: "json" }).$type<string[]>().notNull(),
   year: integer("year"),
   quarter: text("quarter").$type<"Winter" | "Spring" | "Summer" | "Fall">(),
   episodeCount: integer("episode_count"),
@@ -30,4 +30,6 @@ export const anime = sqliteTable("anime", {
 export const animeRelations = relations(anime, ({ many }) => ({
   episodes: many(episodes),
   bookmarks: many(bookmarks),
+  genres: many(animeGenres),
 }));
+

@@ -12,7 +12,7 @@ ON CONFLICT(email) DO UPDATE SET name=excluded.name;
 
 -- Seed Public User Account (Better Auth credential mapping)
 INSERT INTO user_accounts (id, account_id, provider_id, user_id, password, created_at, updated_at) VALUES
-('account_user_1', 'user_1', 'credential', 'user_1', 'd3ccc6d964ac705c6f8f913d5400b8f1:f3944629eb96753dc721585746f683b7fc0d60fc2e219be83b754e0b0beda39daab134e97ff978122be2b9e708dee5bfe6a2377fbe2e8d6cc6e8378d814294d0', strftime('%s', 'now'), strftime('%s', 'now'))
+('account_user_1', 'user_1', 'credential', 'user_1', '8d75c2750932b4bc9568f0cb139ecc12:a6a12cd634483ff8f4c5a153d3137cac14952e9b0cc8687388bc958b6079766a67747d5cfad8117cd34c6fe5f8758e3ad6c72bcf4b25d5c70c7831fef70b9b2f', strftime('%s', 'now'), strftime('%s', 'now'))
 ON CONFLICT(id) DO NOTHING;
 
 -- Seed Public User Profile (Decoupled details referencing users and roles)

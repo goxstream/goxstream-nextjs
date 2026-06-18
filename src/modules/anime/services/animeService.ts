@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
 import { AnimeRepository } from "../repositories/animeRepository";
 import type { Anime } from "../types";
-import type { AdminAnimeRow } from "../dto/adminAnime";
+import type { AdminAnimeRow, AdminGenreRow } from "../dto/adminAnime";
+import { db } from "@/infrastructure/database/client";
+import { genres as genresTable, animeGenres as animeGenresTable } from "@/infrastructure/database/schema";
+import { count, eq } from "drizzle-orm";
 
 export class AnimeService {
   private repository = new AnimeRepository();
@@ -10,13 +13,13 @@ export class AnimeService {
     try {
       const list = await this.repository.findAllForAdmin();
 
-      return list.map((a) => ({
+      return list.map((a: any) => ({
         id: a.id,
         title: a.title,
         slug: a.slug,
         coverImage: a.coverImage,
         status: a.status as AdminAnimeRow["status"],
-        genres: (a.genres as string[]) || [],
+        genres: a.genres?.map((g: any) => g.genre.name) || [],
         year: a.year,
         quarter: a.quarter as AdminAnimeRow["quarter"],
         episodeCount: a.episodeCount,
@@ -35,14 +38,14 @@ export class AnimeService {
     try {
       const list = await this.repository.findAll();
       
-      const mapped: Anime[] = list.map((a) => ({
+      const mapped: Anime[] = list.map((a: any) => ({
         id: a.id,
         title: a.title,
         slug: a.slug,
         coverImage: a.coverImage,
         bannerImage: a.bannerImage,
         synopsis: a.synopsis || "",
-        genres: a.genres || [],
+        genres: a.genres?.map((g: any) => g.genre.name) || [],
         year: a.year || new Date().getFullYear(),
         quarter: (a.quarter as any) || "Winter",
         episodeCount: a.episodeCount || 0,
@@ -85,7 +88,7 @@ export class AnimeService {
       coverImage: animeRecord.coverImage,
       bannerImage: animeRecord.bannerImage,
       synopsis: animeRecord.synopsis || "",
-      genres: animeRecord.genres || [],
+      genres: animeRecord.genres?.map((g: any) => g.genre.name) || [],
       year: animeRecord.year || new Date().getFullYear(),
       quarter: (animeRecord.quarter as any) || "Winter",
       episodeCount: animeRecord.episodeCount || 0,
@@ -111,6 +114,41 @@ export class AnimeService {
       anime: mappedAnime,
       episodes: mappedEpisodes,
     };
+  }
+
+  async getAdminGenreList(): Promise<AdminGenreRow[]> {
+    try {
+      const list = await db
+        .select({
+          id: genresTable.id,
+          name: genresTable.name,
+          slug: genresTable.slug,
+          animeCount: count(animeGenresTable.animeId),
+        })
+        .from(genresTable)
+        .leftJoin(animeGenresTable, eq(genresTable.id, animeGenresTable.genreId))
+        .groupBy(genresTable.id)
+        .all();
+      return list;
+    } catch (error) {
+      console.error("Failed to fetch admin genre list:", error);
+      return [];
+    }
+  }
+
+  async createGenre(name: string) {
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    const id = `genre-${slug}`;
+    await db.insert(genresTable).values({ id, name, slug }).run();
+  }
+
+  async renameGenre(id: string, name: string) {
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    await db.update(genresTable).set({ name, slug, updatedAt: new Date() }).where(eq(genresTable.id, id)).run();
+  }
+
+  async deleteGenre(id: string) {
+    await db.delete(genresTable).where(eq(genresTable.id, id)).run();
   }
 
   private partitionCategories(list: Anime[]) {

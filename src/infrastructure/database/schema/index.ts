@@ -4,3 +4,5 @@ export * from "./anime";
 export * from "./media";
 export * from "./interactions";
 export * from "./system";
+export * from "./genres";
+

@@ -4,24 +4,42 @@ import { eq, desc } from "drizzle-orm";
 
 export class AnimeRepository {
   async findAll() {
-    return db.select().from(animeTable).all();
+    return db.query.anime.findMany({
+      with: {
+        genres: {
+          with: {
+            genre: true,
+          },
+        },
+      },
+    });
   }
 
   async findAllForAdmin() {
-    return db
-      .select()
-      .from(animeTable)
-      .orderBy(desc(animeTable.createdAt))
-      .all();
+    return db.query.anime.findMany({
+      orderBy: desc(animeTable.createdAt),
+      with: {
+        genres: {
+          with: {
+            genre: true,
+          },
+        },
+      },
+    });
   }
 
   async findBySlug(slug: string) {
-    const results = await db
-      .select()
-      .from(animeTable)
-      .where(eq(animeTable.slug, slug))
-      .limit(1);
-    return results[0] || null;
+    const result = await db.query.anime.findFirst({
+      where: eq(animeTable.slug, slug),
+      with: {
+        genres: {
+          with: {
+            genre: true,
+          },
+        },
+      },
+    });
+    return result || null;
   }
 
   async findEpisodesByAnimeId(animeId: string) {
