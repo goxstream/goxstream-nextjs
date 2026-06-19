@@ -23,6 +23,8 @@ This repository contains local agent skills structured inside the `.agents/skill
 - `drizzle-orm-development`: Applied when writing database schemas, relations, creating migrations, or running seeding operations.
 - `tailwindcss-v4-development`: Applied when writing styles, editing theme tokens, utility classes, and layouts.
 - `shadcn-ui-development`: Applied when using shadcn CLI or installing components.
+- `scripts-development`: Applied when creating, modifying, or executing build/maintenance scripts, seeding scripts, patches, database seeding routines, or custom Node.js/tsx automation scripts in the scripts/ folder.
+
 
 
 ## Conventions
