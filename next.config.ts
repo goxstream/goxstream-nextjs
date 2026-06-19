@@ -3,7 +3,9 @@ import type { NextConfig } from "next";
 
 // Enable calling `getCloudflareContext()` in `next dev`.
 // See https://opennext.js.org/cloudflare/bindings#local-access-to-bindings.
-initOpenNextCloudflareForDev();
+if (process.env.NODE_ENV === "development") {
+	initOpenNextCloudflareForDev();
+}
 
 const nextConfig: NextConfig = {
 	images: {
@@ -23,6 +25,13 @@ const nextConfig: NextConfig = {
 			},
 		],
 	},
+	webpack: (config, { isServer }) => {
+		if (isServer) {
+			config.externals = config.externals || [];
+			config.externals.push("cloudflare:workers");
+		}
+		return config;
+	}
 };
 
 export default nextConfig;

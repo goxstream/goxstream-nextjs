@@ -95,6 +95,30 @@
 			"name": "EMAIL"
 		}
 	],
+	"containers": [
+		{
+			"class_name": "GoxstreamContainer",
+			"image": "./src/cloudflare/containers/video-converter/Dockerfile",
+			"max_instances": 10
+		}
+	],
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "GOXSTREAM_CONTAINER",
+				"class_name": "GoxstreamContainer"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v2_add_goxstream_container",
+			"new_sqlite_classes": ["GoxstreamContainer"]
+		}
+	],
+	"dev": {
+		"enable_containers": false
+	},
 	"upload_source_maps": true,
 	"keep_vars": true,
 	"keep_names": false,
