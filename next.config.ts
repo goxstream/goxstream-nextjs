@@ -25,6 +25,7 @@ const nextConfig: NextConfig = {
 			},
 		],
 	},
+	serverExternalPackages: ["@cloudflare/containers", "cloudflare:workers"],
 	webpack: (config, { isServer }) => {
 		if (isServer) {
 			config.externals = config.externals || [];
