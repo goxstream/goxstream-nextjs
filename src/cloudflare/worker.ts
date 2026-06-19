@@ -2,7 +2,8 @@
 import { default as handler } from "../../.open-next/worker.js";
 import { handleScheduledEvent } from "./workers/cron";
 import { handleQueueBatch } from "./workers/queue-consumer";
-import { Container } from "@cloudflare/containers";
+import { Container, ContainerProxy } from "@cloudflare/containers";
+export { ContainerProxy };
 
 export class GoxstreamContainer extends Container {
   defaultPort = 8080;
