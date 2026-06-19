@@ -1,4 +1,5 @@
 import { defineCloudflareConfig } from "@opennextjs/cloudflare";
+import r2IncrementalCache from "@opennextjs/cloudflare/overrides/incremental-cache/r2-incremental-cache";
 
 export default {
 	...defineCloudflareConfig({
@@ -7,6 +8,8 @@ export default {
 		// `import r2IncrementalCache from "@opennextjs/cloudflare/overrides/incremental-cache/r2-incremental-cache";`
 		// See https://opennext.js.org/cloudflare/caching for more details
 		// incrementalCache: r2IncrementalCache,
+		
+		incrementalCache: r2IncrementalCache,
 	}),
 	buildCommand: process.platform === "win32" ? "npm run build:webpack" : "npm run build",
 };
