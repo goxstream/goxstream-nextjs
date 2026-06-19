@@ -31,7 +31,8 @@ const nextConfig: NextConfig = {
 			config.externals.push("cloudflare:workers");
 		}
 		return config;
-	}
+	},
+	turbopack: {}
 };
 
 export default nextConfig;
