@@ -1,9 +1,10 @@
 # Stage 1: Build the Go transcode server
 FROM golang:1.22-alpine AS builder
 WORKDIR /app
-COPY main.go .
-RUN go mod init video-converter || true
-RUN go build -o transcode-server main.go
+COPY go.mod ./
+COPY main.go ./
+COPY pkg/ ./pkg/
+RUN go build -o transcode-server .
 
 # Stage 2: Create runtime image with ffmpeg
 FROM alpine:3.19
