@@ -88,3 +88,10 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 }
+
+// HandleHealth menangani HTTP GET request untuk memeriksa status kesehatan kontainer
+func HandleHealth(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"status":"healthy","service":"video-converter"}`))
+}

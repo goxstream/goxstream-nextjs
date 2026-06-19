@@ -9,6 +9,7 @@ import (
 func main() {
 	http.HandleFunc("/transcode", pkg.HandleTranscode)
 	http.HandleFunc("/ws", pkg.HandleWebSocket)
+	http.HandleFunc("/health", pkg.HandleHealth)
 
 	log.Println("Goxstream Container Server listening on :8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
