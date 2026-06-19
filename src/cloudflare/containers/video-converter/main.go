@@ -19,7 +19,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"time"
 )
 
 // JobState menyimpan status pekerjaan transcoding dan koneksi client WebSocket yang aktif
@@ -48,7 +47,6 @@ func getOrCreateJob(jobID string) *JobState {
 		Status:  "processing",
 		Clients: make(map[net.Conn]bool),
 	}
-	jobs.Store(jobID, job)
 	jobs[jobID] = job
 	return job
 }
