@@ -1,22 +1,30 @@
-import { getContainerBinding } from "@/cloudflare/bindings/container";
+import { getEnv } from "@/cloudflare/bindings/env";
 
 export async function GET() {
   try {
-    const binding = getContainerBinding("GOXSTREAM_CONTAINER");
-    
-    // Dynamically import @cloudflare/containers
-    const { getContainer } = await import("@cloudflare/containers");
-    
-    // Gunakan dummy/test ID untuk memicu/menguji instansiasi kontainer
-    const containerInstance = getContainer(binding as any, "health-check-test");
-    
-    const healthRequest = new Request("http://localhost/health", {
-      method: "GET"
-    });
-    
-    return await containerInstance.fetch(healthRequest);
+    let devConverterUrl = process.env.GOX_CONVERTER_URL;
+    let env: any = null;
+    try {
+      env = getEnv();
+      if (env && env.GOX_CONVERTER_URL) {
+        devConverterUrl = env.GOX_CONVERTER_URL;
+      }
+    } catch (e) {
+      // Dev mode local next dev
+    }
+
+    if (devConverterUrl) {
+      return await fetch(`${devConverterUrl}/health`);
+    }
+
+    if (!env || !env.CONVERTER_SERVICE) {
+      throw new Error("CONVERTER_SERVICE service binding is not configured.");
+    }
+
+    return await env.CONVERTER_SERVICE.fetch("http://localhost/health");
   } catch (error: any) {
-    console.error("Failed to check GoxstreamContainer health:", error);
+    console.error("Failed to check HLS Converter health:", error);
     return new Response(error.message || "Internal Server Error", { status: 500 });
   }
 }
+

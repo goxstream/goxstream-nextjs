@@ -1,4 +1,4 @@
-import { getContainerBinding } from "@/cloudflare/bindings/container";
+import { getEnv } from "@/cloudflare/bindings/env";
 
 export async function GET(
   request: Request,
@@ -11,18 +11,35 @@ export async function GET(
 
   try {
     const { episodeId } = await params;
-    const binding = getContainerBinding("GOXSTREAM_CONTAINER");
     
-    // Dynamically import @cloudflare/containers
-    const { getContainer } = await import("@cloudflare/containers");
-    
-    // Ambil instance kontainer untuk episode bersangkutan
-    const containerInstance = getContainer(binding as any, episodeId);
-    
-    // Meneruskan request WebSocket handshake secara langsung ke kontainer
-    return containerInstance.fetch(request);
+    let devConverterUrl = process.env.GOX_CONVERTER_URL;
+    let env: any = null;
+    try {
+      env = getEnv();
+      if (env && env.GOX_CONVERTER_URL) {
+        devConverterUrl = env.GOX_CONVERTER_URL;
+      }
+    } catch (e) {
+      // Bekerja di dev mode lokal (next dev) tanpa context wrangler
+    }
+
+    if (devConverterUrl) {
+      // Hubungkan langsung ke WebSocket native runner di lokal
+      const wsUrl = devConverterUrl.replace(/^http/, "ws") + `/ws?job_id=${episodeId}`;
+      return fetch(wsUrl, { headers: request.headers });
+    }
+
+    if (!env || !env.CONVERTER_SERVICE) {
+      throw new Error("CONVERTER_SERVICE service binding is not configured.");
+    }
+
+    // Meneruskan request WebSocket handshake secara langsung ke Service Binding
+    return env.CONVERTER_SERVICE.fetch(`http://localhost/container/${episodeId}/ws?job_id=${episodeId}`, {
+      headers: request.headers
+    });
   } catch (error: any) {
-    console.error("Failed to proxy WebSocket to GoxstreamContainer:", error);
+    console.error("Failed to proxy WebSocket to HLS Converter:", error);
     return new Response(error.message || "Internal Server Error", { status: 500 });
   }
 }
+

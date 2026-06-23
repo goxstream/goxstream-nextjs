@@ -1,5 +1,3 @@
-import { getContainer } from "@cloudflare/containers";
-
 // queue-consumer.ts - Queue Message Consumer (Cloudflare Queues)
 export async function handleQueueBatch(batch: MessageBatch<any>, env: CloudflareEnv): Promise<void> {
   for (const message of batch.messages) {
@@ -11,11 +9,15 @@ export async function handleQueueBatch(batch: MessageBatch<any>, env: Cloudflare
         const { episodeId, sourceFileKey } = body;
         console.log(`Triggering transcoding for episode ${episodeId} using source ${sourceFileKey}`);
         
-        // Ambil instance container berdasarkan episodeId
-        const containerInstance = getContainer(env.GOXSTREAM_CONTAINER, episodeId);
+        const devConverterUrl = (env as any).GOX_CONVERTER_URL;
+        const url = devConverterUrl 
+          ? `${devConverterUrl}/transcode` 
+          : `http://localhost/container/${episodeId}/transcode`;
         
-        // Picu pemrosesan video secara asinkron di kontainer
-        const response = await containerInstance.fetch("http://localhost/transcode", {
+        const client = devConverterUrl ? fetch : (env as any).CONVERTER_SERVICE.fetch;
+        
+        // Picu pemrosesan video secara asinkron di converter
+        const response = await client(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -26,7 +28,7 @@ export async function handleQueueBatch(batch: MessageBatch<any>, env: Cloudflare
         });
         
         if (!response.ok) {
-          throw new Error(`Container responded with status ${response.status}: ${await response.text()}`);
+          throw new Error(`Converter responded with status ${response.status}: ${await response.text()}`);
         }
         
         console.log(`Successfully triggered transcode job for episode ${episodeId}`);
@@ -39,4 +41,5 @@ export async function handleQueueBatch(batch: MessageBatch<any>, env: Cloudflare
     }
   }
 }
+
 
