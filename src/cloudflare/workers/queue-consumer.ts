@@ -16,14 +16,18 @@ export async function handleQueueBatch(batch: MessageBatch<any>, env: Cloudflare
         
         const client = devConverterUrl ? fetch : (env as any).CONVERTER_SERVICE.fetch;
         
+        const appUrl = (env as any).BETTER_AUTH_URL || "http://localhost:3000";
+        const inputUrl = `${appUrl}/api/internal/media/download?key=${sourceFileKey}`;
+        const uploadUrlPrefix = `${appUrl}/api/internal/media/upload/streams/${episodeId}`;
+
         // Picu pemrosesan video secara asinkron di converter
         const response = await client(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             job_id: episodeId,
-            input_key: sourceFileKey,
-            output_prefix: `streams/${episodeId}`
+            input_url: inputUrl,
+            upload_url_prefix: uploadUrlPrefix
           })
         });
         
